@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Modeling Packages — Muhammad Ishaq</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0D1B2A;
+    --steel:  #1B3A5C;
+    --gold:   #C9A84C;
+    --gold-lt:#F0D080;
+    --cream:  #F8F4EE;
+    --mist:   #E8EFF7;
+    --white:  #FFFFFF;
+    --gray:   #7A8899;
+    --green:  #2E7D52;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── HERO ─────────────────────────────────────── */
+  .hero {
+    background: var(--navy);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(27,58,92,0.6) 0%, transparent 70%);
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 6px 18px;
+    border-radius: 2px;
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    max-width: 520px;
+    margin: 0 auto 28px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-meta span {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-meta span::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 8px;
+  }
+
+  /* ── PACKAGES GRID ────────────────────────────── */
+  .packages {
+    padding: 50px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-label {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 10px;
+  }
+  .section-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .section-sub {
+    text-align: center;
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 44px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* ── CARD ─────────────────────────────────────── */
+  .card {
+    background: var(--white);
+    border-radius: 4px;
+    border: 1.5px solid #DDE4EE;
+    padding: 32px 28px 28px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(13,27,42,0.12);
+  }
+  .card.featured {
+    border-color: var(--gold);
+    background: var(--navy);
+    color: var(--white);
+  }
+  .card.featured .card-desc,
+  .card.featured .feature-item { color: rgba(255,255,255,0.7); }
+  .card.featured .feature-item::before { color: var(--gold); }
+  .card.featured .card-divider { border-color: rgba(255,255,255,0.12); }
+  .card.featured .delivery { color: rgba(255,255,255,0.5); }
+
+  .badge {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .card-tier {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: inherit;
+  }
+  .card.featured .card-name { color: var(--white); }
+  .card-name-sub {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 18px;
+    font-weight: 400;
+  }
+  .card.featured .card-name-sub { color: rgba(255,255,255,0.45); }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .price {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .card.featured .price { color: var(--gold); }
+  .price-cur {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--gray);
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+  .card.featured .price-cur { color: rgba(255,255,255,0.5); }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .card-divider {
+    border: none;
+    border-top: 1px solid #EEF0F4;
+    margin-bottom: 18px;
+  }
+
+  .features-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 12px;
+  }
+  .card.featured .features-label { color: rgba(255,255,255,0.4); }
+
+  .feature-list {
+    list-style: none;
+    margin-bottom: 24px;
+  }
+  .feature-item {
+    font-size: 13px;
+    color: #445;
+    padding: 5px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .feature-item::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .feature-item.extra::before { content: '★'; color: var(--gold); font-size: 11px; }
+
+  .delivery {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .delivery::before {
+    content: '⏱';
+    font-size: 13px;
+  }
+
+  .cta {
+    display: block;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+  }
+  .cta-outline {
+    background: transparent;
+    border: 1.5px solid #DDE4EE;
+    color: var(--navy);
+  }
+  .cta-outline:hover { border-color: var(--navy); }
+  .cta-gold {
+    background: var(--gold);
+    color: var(--navy);
+  }
+  .cta-gold:hover { background: var(--gold-lt); }
+  .cta-navy {
+    background: var(--navy);
+    color: var(--white);
+  }
+  .cta-navy:hover { background: var(--steel); }
+
+  /* ── ADD-ONS ──────────────────────────────────── */
+  .addons {
+    padding: 0 24px 50px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .addons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .addon-card {
+    background: var(--white);
+    border: 1.5px solid #DDE4EE;
+    border-radius: 4px;
+    padding: 20px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: border-color 0.2s;
+  }
+  .addon-card:hover { border-color: var(--gold); }
+  .addon-icon {
+    width: 36px; height: 36px;
+    background: var(--mist);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .addon-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+  .addon-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .addon-desc { font-size: 11px; color: var(--gray); margin-top: 2px; }
+
+  /* ── GUARANTEE ────────────────────────────────── */
+  .guarantee {
+    background: var(--navy);
+    margin: 0 24px 50px;
+    max-width: 1052px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 4px;
+    padding: 32px 36px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .guarantee-icon {
+    font-size: 40px;
+    flex-shrink: 0;
+  }
+  .guarantee-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .guarantee-text p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    max-width: 680px;
+  }
+  .guarantee-text p strong { color: var(--gold); }
+
+  /* ── FOOTER ───────────────────────────────────── */
+  .footer {
+    text-align: center;
+    padding: 28px 24px 40px;
+    border-top: 1px solid #DDE4EE;
+  }
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .footer-title {
+    font-size: 12px;
+    color: var(--gray);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .footer-tags {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .footer-tag {
+    font-size: 11px;
+    background: var(--mist);
+    color: var(--steel);
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  /* ── INDUSTRY TICKER ──────────────────────────── */
+  .industries {
+    background: var(--gold);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-track {
+    display: inline-block;
+    animation: ticker 22s linear infinite;
+  }
+  .ticker-track span {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin: 0 28px;
+  }
+  .ticker-track span::before { content: '◆  '; font-size: 7px; }
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Financial Modeling Services</div>
+  <h1>Investor-Ready Models<br><span>Built for Your Industry</span></h1>
+  <p>Professional Excel financial model templates — clean formulas, dynamic assumptions, and dashboards that make decisions easy.</p>
+  <div class="hero-meta">
+    <span>7+ Years Experience</span>
+    <span>Zero Formula Errors Guaranteed</span>
+    <span>Industry-Specific Models</span>
+    <span>QuickBooks Compatible</span>
+  </div>
+</div>
+
+<!-- INDUSTRY TICKER -->
+<div class="industries">
+  <div class="ticker-track">
+    <span>E-Commerce</span><span>SaaS</span><span>Real Estate</span>
+    <span>Manufacturing</span><span>Retail Chain</span><span>NGO / Non-Profit</span>
+    <span>Hospitality</span><span>Construction</span><span>Services</span>
+    <span>Healthcare</span><span>Logistics</span><span>Startups</span>
+    <span>E-Commerce</span><span>SaaS</span><span>Real Estate</span>
+    <span>Manufacturing</span><span>Retail Chain</span><span>NGO / Non-Profit</span>
+    <span>Hospitality</span><span>Construction</span><span>Services</span>
+    <span>Healthcare</span><span>Logistics</span><span>Startups</span>
+  </div>
+</div>
+
+<!-- PACKAGES -->
+<div class="packages">
+  <div class="section-label">Pricing Packages</div>
+  <div class="section-title">Choose Your Package</div>
+  <div class="section-sub">All packages include zero-error formulas, blue/black color coding, and a separate assumptions tab.</div>
+
+  <div class="grid">
+
+    <!-- STARTER -->
+    <div class="card">
+      <div class="card-tier">Starter</div>
+      <div class="card-name">Single Model</div>
+      <div class="card-name-sub">One industry, one model</div>
+      <div class="price-row">
+        <span class="price-cur">$</span>
+        <span class="price">80</span>
+      </div>
+      <p class="card-desc">Perfect for a single industry template. Clean, professional, and investor-ready.</p>
+      <hr class="card-divider">
+      <div class="features-label">What's Included</div>
+      <ul class="feature-list">
+        <li class="feature-item">1 industry-specific Excel model</li>
+        <li class="feature-item">Revenue projections (3 years)</li>
+        <li class="feature-item">P&L + Cash Flow statement</li>
+        <li class="feature-item">Key financial metrics & KPIs</li>
+        <li class="feature-item">Separate assumptions tab</li>
+        <li class="feature-item">Blue = inputs, Black = formulas</li>
+        <li class="feature-item">Zero formula errors</li>
+      </ul>
+      <div class="delivery">Delivered in 2–3 days</div>
+      <a href="https://www.upwork.com/freelancers/muhammadishaqanalyst" target="_blank" class="cta cta-outline">Get Started</a>
+    </div>
+
+    <!-- PROFESSIONAL (FEATURED) -->
+    <div class="card featured">
+      <div class="badge">Most Popular</div>
+      <div class="card-tier">Professional</div>
+      <div class="card-name">3-Model Bundle</div>
+      <div class="card-name-sub">Three industries, full suite</div>
+      <div class="price-row">
+        <span class="price-cur">$</span>
+        <span class="price">220</span>
+      </div>
+      <p class="card-desc">The most popular choice — three complete models for three different industries, all consistent in structure.</p>
+      <hr class="card-divider">
+      <div class="features-label">What's Included</div>
+      <ul class="feature-list">
+        <li class="feature-item">3 industry-specific Excel models</li>
+        <li class="feature-item">Revenue + cost structure + cash flow</li>
+        <li class="feature-item">P&L, Balance Sheet, Cash Flow</li>
+        <li class="feature-item">Sensitivity analysis tables</li>
+        <li class="feature-item">Executive summary dashboard</li>
+        <li class="feature-item">Break-even analysis</li>
+        <li class="feature-item">Consistent design across all 3</li>
+        <li class="feature-item extra">1 round of revision per model</li>
+        <li class="feature-item extra">QuickBooks export compatibility</li>
+      </ul>
+      <div class="delivery">Delivered in 5–6 days</div>
+      <a href="https://www.upwork.com/freelancers/muhammadishaqanalyst" target="_blank" class="cta cta-gold">Get This Package</a>
+    </div>
+
+    <!-- ENTERPRISE -->
+    <div class="card">
+      <div class="card-tier">Enterprise</div>
+      <div class="card-name">Full Library</div>
+      <div class="card-name-sub">5+ models, complete system</div>
+      <div class="price-row">
+        <span class="price-cur">$</span>
+        <span class="price">400</span>
+      </div>
+      <p class="card-desc">A complete template library across 5 or more industries — built for consultants, agencies, or software platforms.</p>
+      <hr class="card-divider">
+      <div class="features-label">What's Included</div>
+      <ul class="feature-list">
+        <li class="feature-item">5+ industry-specific models</li>
+        <li class="feature-item">Full 5-year projections</li>
+        <li class="feature-item">Investor-ready formatting</li>
+        <li class="feature-item">Scenario modeling (3 cases)</li>
+        <li class="feature-item">Sensitivity + waterfall charts</li>
+        <li class="feature-item">Master summary dashboard</li>
+        <li class="feature-item">2 rounds of revision per model</li>
+        <li class="feature-item extra">Written documentation</li>
+        <li class="feature-item extra">QuickBooks import workflow</li>
+        <li class="feature-item extra">Ongoing support for 14 days</li>
+      </ul>
+      <div class="delivery">Delivered in 10–12 days</div>
+      <a href="https://www.upwork.com/freelancers/muhammadishaqanalyst" target="_blank" class="cta cta-navy">Get This Package</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD-ONS -->
+<div class="addons">
+  <div class="section-label" style="text-align:left; margin-bottom:6px;">Optional Add-Ons</div>
+  <div class="section-title" style="text-align:left; font-size:22px; margin-bottom:16px;">Enhance Any Package</div>
+  <div class="addons-grid">
+    <div class="addon-card">
+      <div class="addon-icon">📊</div>
+      <div>
+        <div class="addon-name">Extra Industry Model</div>
+        <div class="addon-price">+$70</div>
+        <div class="addon-desc">Add one more industry to any package</div>
+      </div>
+    </div>
+    <div class="addon-card">
+      <div class="addon-icon">🎯</div>
+      <div>
+        <div class="addon-name">Scenario Modeling</div>
+        <div class="addon-price">+$40</div>
+        <div class="addon-desc">Base / Best / Worst case per model</div>
+      </div>
+    </div>
+    <div class="addon-card">
+      <div class="addon-icon">🔗</div>
+      <div>
+        <div class="addon-name">QuickBooks Workflow</div>
+        <div class="addon-price">+$50</div>
+        <div class="addon-desc">Import actuals from QBO into model</div>
+      </div>
+    </div>
+    <div class="addon-card">
+      <div class="addon-icon">📑</div>
+      <div>
+        <div class="addon-name">Written Documentation</div>
+        <div class="addon-price">+$30</div>
+        <div class="addon-desc">Full how-to guide for each model</div>
+      </div>
+    </div>
+    <div class="addon-card">
+      <div class="addon-icon">🔁</div>
+      <div>
+        <div class="addon-name">Extra Revision Round</div>
+        <div class="addon-price">+$25</div>
+        <div class="addon-desc">One additional revision per model</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GUARANTEE -->
+<div class="guarantee">
+  <div class="guarantee-icon">🛡️</div>
+  <div class="guarantee-text">
+    <h3>Quality Guarantee — Zero Formula Errors</h3>
+    <p>Every model is delivered with <strong>zero formula errors</strong> — no #REF!, no #DIV/0!, no hardcoded values where formulas should be. <strong>Blue cells = your inputs. Black cells = formulas. Always.</strong> If any formula error is found after delivery, I fix it immediately at no charge.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-name">Muhammad Ishaq</div>
+  <div class="footer-title">Senior Financial Analyst</div>
+  <div class="footer-tags">
+    <span class="footer-tag">Financial Modeling</span>
+    <span class="footer-tag">Excel</span>
+    <span class="footer-tag">QuickBooks Online</span>
+    <span class="footer-tag">SAP B1</span>
+    <span class="footer-tag">Power BI</span>
+    <span class="footer-tag">FP&A</span>
+  </div>
+</div>
+
+</body>
+</html>
